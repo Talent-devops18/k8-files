@@ -1,0 +1,38 @@
+apiVersion: apps/v1 
+kind: Deployment
+metadata:
+  name: test-deploy-both-fail
+  labels:
+    type: deploy
+      #namespace: dev
+spec: ## specific to RC
+  replicas: 1 ## no of pod to create 
+  selector:
+    matchLabels:
+      type: web 
+  template: #### The below statements belongs to pod.
+    metadata:
+      name: mypod
+      labels:
+        type: web 
+    spec: ## specific to pod 
+      containers:
+      - name: httpd
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: 5m
+            memory: 8Mi
+          limits:
+            cpu: 10m
+            memory: 12Mi
+        livenessProbe:
+          httpGet:
+            path: /user.html
+            port: 80
+        readinessProbe:
+          httpGet:
+            path: /abc.html
+            port: 80

@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: with-node-affinity-hard-node-selector-2
+spec:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: tier
+            operator: In
+            values:
+            - web
+  containers:
+  - name: with-node-affinity
+    image: httpd
+  nodeSelector:
+    app: web
+

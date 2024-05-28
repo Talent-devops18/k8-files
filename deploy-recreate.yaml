@@ -1,0 +1,24 @@
+apiVersion: apps/v1 
+kind: Deployment
+metadata:
+  name: test-deploy-recreate
+  labels:
+    type: deploy
+spec: ## specific to RC
+  replicas: 4 ## no of pod to create 
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      type: web 
+  template: #### The below statements belongs to pod.
+    metadata:
+      name: mypod
+      labels:
+        type: web 
+    spec: ## specific to pod 
+      containers:
+      - name: httpd
+        image: httpd:latest
+        ports:
+        - containerPort: 80

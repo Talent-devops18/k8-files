@@ -1,0 +1,22 @@
+apiVersion: apps/v1 
+kind: ReplicaSet
+metadata:
+  name: rs-test
+  labels:
+    type: rs 
+spec: ## specific to RC
+  replicas: 5 ## no of pod to create 
+  selector:
+    matchLabels:
+      type: rs-create 
+  template: #### The below statements belongs to pod.
+    metadata:
+      name: mypod
+      labels:
+        type: rs-create 
+    spec: ## specific to pod 
+      containers:
+      - name: httpd
+        image: httpd:2.4
+        ports:
+        - containerPort: 80

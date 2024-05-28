@@ -1,0 +1,31 @@
+apiVersion: apps/v1 
+kind: Deployment
+metadata:
+  name: test-deploy-hostpath
+  labels:
+    type: deploy
+  namespace: dev
+spec: ## specific to RC
+  replicas: 2 ## no of pod to create 
+  selector:
+    matchLabels:
+      type: web 
+  template: #### The below statements belongs to pod.
+    metadata:
+      name: mypod
+      labels:
+        type: web 
+    spec: ## specific to pod 
+      containers:
+      - name: httpd
+        image: httpd:latest
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: test-vol
+          mountPath: /usr/share/nginx
+      volumes:
+      - name: test-vol
+        hostPath:
+          path: /tmp/devops
+          type: DirectoryOrCreate	
